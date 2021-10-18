@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid vh-100" style="margin-top:20px">
+    <div class="rounded d-flex justify-content-center">
+        <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+            <div class="text-center">
+                <h3 class="text-primary">Create Account</h3>
+            </div>
+            <div class="p-4">
+                <form action="/signup" method="post">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-primary"><i
+                                class="bi bi-person-plus-fill text-white"></i></span>
+                        <input type="text" class="form-control" placeholder="First Name" name="firstname">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-primary"><i
+                                class="bi bi-person-plus-fill text-white"></i></span>
+                        <input type="text" class="form-control" placeholder="Last Name" name="lastname">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-primary"><i class="bi bi-envelope text-white"></i></span>
+                        <input type="email" class="form-control" placeholder="Email" name="email">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-primary"><i class="bi bi-key-fill text-white"></i></span>
+                        <input type="password" class="form-control" placeholder="password" name="password">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-primary"><i class="bi bi-key-fill text-white"></i></span>
+                        <input type="password" class="form-control" placeholder="confirm password"
+                            name="confirm_password">
+                    </div>
+                    <div class="d-grid col-12 mx-auto">
+                        <input type="submit" value="Submit" class="btn btn-primary">
+                    </div>
+                    <p class="text-center mt-3">Already have an account?
+                        <a href="/signin">Sign In</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
