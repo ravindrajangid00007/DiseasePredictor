@@ -78,7 +78,8 @@ def signout():
 @login_required
 def predict():
     available_diseases = ["val1", "val2","val3"]
-    return render_template('predict.html' ,available_diseases=available_diseases)
+    
+    return render_template('predict.html' ,available_diseases=available_diseases , disease=current_user.disease)
 
 @app.route('/predict-disease' , methods=['GET','POST'])
 @login_required
