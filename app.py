@@ -101,7 +101,6 @@ def predictFunction():
         # if parameters are found, return a prediction
         if len(params) > 0:
             params={ sym: 1 if sym in params else 0  for sym in model_columns }
-            print(params)
             query=pd.DataFrame(params,index=['i',])
             query=query.reindex(columns=model_columns)
             query=query.to_numpy()
