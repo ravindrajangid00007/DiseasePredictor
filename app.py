@@ -81,7 +81,7 @@ def SignUp():
 @login_required
 def signout():
     logout_user()
-    return redirect('/signin')
+    return redirect('/')
 
 @app.route('/predict' , methods=['GET'])
 @login_required
