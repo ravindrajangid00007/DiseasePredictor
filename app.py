@@ -74,10 +74,20 @@ def signout():
     logout_user()
     return redirect('/signin')
 
-@app.route('/predict')
+@app.route('/predict' , methods=['GET'])
 @login_required
 def predict():
-    return render_template('predict.html')
+    available_diseases = ["val1", "val2","val3"]
+    return render_template('predict.html' ,available_diseases=available_diseases)
+
+@app.route('/predict-disease' , methods=['GET','POST'])
+@login_required
+def predictDisease():
+    diseases = request.form.getlist('diseases')
+    print(request.form.getlist('diseases'))
+    result = "someDisease"
+    return render_template('predict.html' , disease=result)
+
 
 if __name__ == '__main__':
     db.create_all()
