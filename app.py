@@ -108,10 +108,11 @@ def predictFunction():
             predictions=model.predict(query)
             response=result_columns[predictions.argmax()]
             disease = response
+            user = User.query.filter_by(email=current_user.email).update(dict(disease=disease))
+            db.session.commit()
+            
     else:
         disease = "Provide atlease one symptom for prediction."
-    
-    print(disease)
 
     # Add this disease to our database
     return render_template('predict.html',available_diseases=model_columns ,disease=disease)
