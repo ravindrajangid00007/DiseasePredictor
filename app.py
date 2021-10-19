@@ -55,6 +55,7 @@ def SignIn():
         if user and check_password_hash(user.password, password):
             login_user(user)
             return redirect('/')
+        return render_template('signin.html')
 
 @app.route('/signup' ,  methods=['GET','POST'])
 def SignUp():
@@ -111,7 +112,9 @@ def predictFunction():
         disease = "Provide atlease one symptom for prediction."
     
     print(disease)
-    return render_template('predict.html',model_columns=model_columns ,disease=disease)
+
+    # Add this disease to our database
+    return render_template('predict.html',available_diseases=model_columns ,disease=disease)
 
 if __name__ == '__main__':
     db.create_all()
