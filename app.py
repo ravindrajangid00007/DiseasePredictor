@@ -3,6 +3,14 @@ from flask_login import LoginManager , UserMixin , login_user , login_required ,
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.security import generate_password_hash , check_password_hash
+
+import pandas as pd
+import numpy as np
+from keras.models import load_model
+import joblib
+
+
+
 app = Flask(__name__)
 db = SQLAlchemy(app)
 
@@ -77,21 +85,40 @@ def signout():
 @app.route('/predict' , methods=['GET'])
 @login_required
 def predict():
-    available_diseases = ["val1", "val2","val3"]
-    
-    return render_template('predict.html' ,available_diseases=available_diseases , disease=current_user.disease)
+    return render_template('predict.html' ,available_diseases=model_columns , disease=current_user.disease)
 
-@app.route('/predict-disease' , methods=['GET','POST'])
+# Define a predict function as an endpoint
+@app.route("/predict-disease", methods=["GET", "POST"])
 @login_required
-def predictDisease():
-    diseases = request.form.getlist('diseases')
-    print(request.form.getlist('diseases'))
-    result = "someDisease"
-    return render_template('predict.html' , disease=result)
+def predictFunction():
+    disease=None
+    if request.method =="POST":
+        params = request.form.getlist('diseases')
+        if len(params)==0 :
+            disease = "Provide atlease one symptom for prediction."
 
+        # if parameters are found, return a prediction
+        if len(params) > 0:
+            params={ sym: 1 if sym in params else 0  for sym in model_columns }
+            print(params)
+            query=pd.DataFrame(params,index=['i',])
+            query=query.reindex(columns=model_columns)
+            query=query.to_numpy()
+            predictions=model.predict(query)
+            response=result_columns[predictions.argmax()]
+            disease = response
+    else:
+        disease = "Provide atlease one symptom for prediction."
+    
+    print(disease)
+    return render_template('predict.html',model_columns=model_columns ,disease=disease)
 
 if __name__ == '__main__':
     db.create_all()
+    model=load_model("static/mldata/predictor.h5")
+    model_columns=joblib.load("static/mldata/columns.pkl")
+    result_columns=joblib.load("static/mldata/result_columns.pkl")
+
     app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
     app.debug = True
-    app.run(port = 5000)
+    app.run(host='0.0.0.0',port = 5555)
